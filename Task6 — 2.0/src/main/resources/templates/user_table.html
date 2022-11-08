@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Your info</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="background-color: #343a40; height: 30px;">
+        <div class="col-md-8">
+            <p class="text-white"><span class="font-weight-bold" th:text="${user.email}"> </span>, roles:
+                <span id="s1" th:each="user : ${user.roles}">
+                <span th:text="${user}"></span>
+            </span></p>
+        </div>
+        <div class="col-md-4">
+            <p class="text-right"><small><a href="/logout" class="text-secondary">Logout</a></small></p>
+        </div>
+    </div>
+</div>
+<div class="container-fluid d-flex flex-column">
+    <div class="row flex-fill d-flex h-100 justify-content-start">
+        <div class="col-md-3 pt-2 pl-0 pr-0">
+            <button class="btn btn-primary btn-md btn-block">User</button>
+        </div>
+        <div class="col-md-9 p-0">
+            <div class="p-4 border bg-light" style="height: 750px;">
+                <p><b> User information-page </b></p>
+                <div th:switch="${user}">
+                    <h2 th:case="null">No users found!</h2>
+                    <div th:case="*">
+                        <div class="card">
+                            <div class="card-header">About user</div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-nowrap">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Surname</th>
+                                            <th>Date of birth</th>
+                                            <th>Email</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody style="background-color: lightgrey ">
+                                        <td th:text="${user.id}" id="user-id"></td>
+                                        <td th:text="${user.name}"></td>
+                                        <td th:text="${user.surname}"></td>
+                                        <td th:text="${user.dateOfBirth}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 text-right mt-3" id="admin-request">
+                <button class="btn btn-primary block text-center">
+                    I want to become an Admin
+                </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+
+<script src="user.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

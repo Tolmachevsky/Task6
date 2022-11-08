@@ -1,0 +1,395 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+        input {
+            display: none;
+        }
+
+        label.btn-outline-primary {
+            border: transparent;
+        }
+
+        input.list-group-item {
+            display: none;
+            background: #dddddd;
+            border: #d0d6dc;
+        }
+
+    </style>
+</head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<body>
+<div class="container-fluid">
+    <div class="row" style="background-color: #343a40; height: 30px;">
+        <div class="col-md-8">
+            <p class="text-white"><span class="font-weight-bold" th:text="${user.email}"> </span>, roles:
+                <span id="s1" th:each="user : ${user.roles}">
+                <span th:text="${user}"></span>
+            </span></p>
+        </div>
+        <div class="col-md-4">
+            <p class="text-right"><small><a href="/logout" class="text-secondary">Logout</a></small></p>
+        </div>
+    </div>
+</div>
+<div class="container-fluid d-flex flex-column" id="all">
+    <div class="row flex-fill d-flex h-100 justify-content-start">
+        <div class="col-md-3 pt-2 pl-0 pr-0">
+            <div class="btn-group-vertical btn-block" role="group"
+                 aria-label="Вертикальная группа кнопок-переключателей">
+                <input type="radio" class="btn-check" name="vbtn-radio" value="admin" id="vbtn-radio1" checked>
+                <label class="btn btn-outline-primary active mb-0" for="vbtn-radio1">
+                    Admin
+                </label>
+                <input type="radio" class="btn-check" name="vbtn-radio" value="user" id="vbtn-radio2">
+                <label class="btn btn-outline-primary mt-0" for="vbtn-radio2">
+                    User
+                </label>
+            </div>
+        </div>
+        <div class="col-md-9 p-0" id="refresh">
+            <div class="block-text" id="block-admin">
+                <div class="p-4 border bg-light" style="height: 750px; " id="element">
+                    <p><b> Admin panel </b></p>
+                    <ul class="nav nav-tabs" role="tablist" style="border: transparent">
+                        <li class="nav-item"><a class="nav-link active" href="#admin" role="tab" data-toggle="tab">
+                            Users
+                            table </a></li>
+                        <li class="nav-item"><a class="nav-link" href="#new-user" role="tab" data-toggle="tab"> New
+                            User </a></li>
+                        <li class="nav-item"><a class="nav-link" href="#requests" role="tab" data-toggle="tab"> Admin
+                            requests </a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="admin">
+                            <div th:switch="${users}">
+                                <h2 th:case="null">No users found!</h2>
+                                <div th:case="*">
+                                    <div class="card">
+                                        <div class="card-header">All users</div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-nowrap" id="table-users">
+                                                    <thead class="table-light">
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Name</th>
+                                                        <th>Surname</th>
+                                                        <th>Date of birth</th>
+                                                        <th>Email</th>
+                                                        <th>Role</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="table-body m-0" id="table-body">
+                                                    <div id="delete" class="modal fade">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <form action="#" method="get" id="delete-form">
+                                                                    <div class="modal-header">
+                                                                        <h3 class="modal-title">Delete user</h3>
+                                                                        <button class="close" data-dismiss="modal">x
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-center">
+                                                                        <div class="container">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2"></div>
+                                                                                <div class="col-md 8">
+                                                                                    <div class="form-group">
+                                                                                        <label for="del1"> ID </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               disabled
+                                                                                               id="del1">
+                                                                                        <label for="del2"> Name </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               disabled
+                                                                                               id="del2">
+                                                                                        <label for="del3">
+                                                                                            Surname </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               disabled
+                                                                                               id="del3">
+                                                                                        <label for="del4"> Email
+                                                                                            address </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               disabled
+                                                                                               id="del4">
+                                                                                    </div>
+                                                                                    <p class="mb-1"> Role </p>
+                                                                                    <select class="form-select form-select-block w-100 mt-0"
+                                                                                            size="2"
+                                                                                            aria-label="size 3 select example"
+                                                                                            id="del5">
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-md-2"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="model-footer mb-2">
+                                                                        <input type="submit"
+                                                                               class="btn btn-danger float-right mr-3"
+                                                                               value="Delete">
+                                                                        <button class="btn btn-secondary float-right mr-1"
+                                                                                data-dismiss="modal">
+                                                                            Close
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="edit" class="modal fade">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content" id="content">
+                                                                <form action="#" method="put" id="edit-form">
+                                                                    <div class="modal-header">
+                                                                        <h3 class="modal-title">Edit user</h3>
+                                                                        <button class="close" data-dismiss="modal">x
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-center">
+                                                                        <div class="container">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2"></div>
+                                                                                <div class="col-md 8">
+                                                                                    <div class="form-group">
+                                                                                        <label for="ed1">
+                                                                                            ID </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               id="ed1"
+                                                                                               DISABLED>
+                                                                                        <label for="ed2">
+                                                                                            Name </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               id="ed2">
+                                                                                        <label for="ed6">
+                                                                                            Date of birth </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="date"
+                                                                                               placeholder=""
+                                                                                               name="dateOfBirth"
+                                                                                               id="ed6">
+                                                                                        <label for="ed3">
+                                                                                            Surname </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               id="ed3">
+                                                                                        <label for="ed4"> Email
+                                                                                            address </label>
+                                                                                        <input class="form-control form-control-lg"
+                                                                                               type="text"
+                                                                                               placeholder=""
+                                                                                               id="ed4">
+                                                                                    </div>
+                                                                                    <p class="mb-1"> Role </p>
+                                                                                    <select class="form-select form-select-block w-100 mt-0"
+                                                                                            size="2"
+                                                                                            multiple
+                                                                                            aria-label="multiple select example"
+                                                                                            id="ed5">
+                                                                                        <option value="USER"> User
+                                                                                        </option>
+                                                                                        <option value="ADMIN"> Admin
+                                                                                        </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-md-2"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="model-footer mb-2 ">
+                                                                        <input type="submit"
+                                                                               class="btn btn-primary float-right mr-1"
+                                                                               value="Edit">
+                                                                        <button class="btn btn-secondary float-right mr-3"
+                                                                                data-dismiss="modal">
+                                                                            Close
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="new-user">
+                            <div class="card">
+                                <div class="card-header">Add new user</div>
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8">
+                                                <form action="#" method="post" id="add-form">
+                                                    <div class="form-group">
+                                                        <label for="new1">
+                                                            Name </label>
+                                                        <input class="form-control form-control-lg"
+                                                               type="text"
+                                                               placeholder=""
+                                                               id="new1">
+                                                        <label for="new2">
+                                                            Surname </label>
+                                                        <input class="form-control form-control-lg"
+                                                               type="text"
+                                                               placeholder=""
+                                                               id="new2">
+                                                        <label for="new3">
+                                                            Date of birth </label>
+                                                        <input class="form-control form-control-lg"
+                                                               type="date"
+                                                               placeholder=""
+                                                               id="new3">
+                                                        <label for="new4"> Email
+                                                            address </label>
+                                                        <input class="form-control form-control-lg"
+                                                               type="text"
+                                                               placeholder=""
+                                                               id="new4">
+                                                        <label for="new5"> Password </label>
+                                                        <input class="form-control form-control-lg"
+                                                               type="text"
+                                                               placeholder=""
+                                                               id="new5">
+                                                    </div>
+                                                    <p class="mb-1"> Role </p>
+                                                    <select class="form-select form-select-block w-100 mt-0"
+                                                            size="2"
+                                                            multiple aria-label="multiple select example"
+                                                            id="new6">
+                                                        <option value="USER"> User
+                                                        </option>
+                                                        <option value="ADMIN"> Admin
+                                                        </option>
+                                                    </select>
+                                                    <input type="submit"
+                                                           class="btn btn-success float-right mr-1 w-100"
+                                                           value="Add new user">
+                                                </form>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="requests">
+                            <div class="card">
+                                <div class="card-header">Admin requests</div>
+                                <div class="card-body">
+                                    <table class="table table-hover table-nowrap" id="table-requests">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Surname</th>
+                                            <th>Date of birth</th>
+                                            <th>Email</th>
+                                            <th>Make admin</th>
+                                            <th>Reject request</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-body" id="requests-body">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="col text-right">
+                            <a href="https://discord.gg/uNMQkGBz" class="btn btn-primary block mt-2">Join
+                                our
+                                Discord channel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="block-text" id="block-user">
+                    <div class="p-4 border bg-light" style="height: 750px;">
+                        <p><b> User information-page </b></p>
+                        <div th:switch="${user}">
+                            <h2 th:case="null">No users found!</h2>
+                            <div th:case="*">
+                                <div class="card">
+                                    <div class="card-header">About user</div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-nowrap">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Name</th>
+                                                    <th>Surname</th>
+                                                    <th>Date of birth</th>
+                                                    <th>Email</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody style="background-color: lightgrey ">
+                                                <td th:text="${user.id}"></td>
+                                                <td th:text="${user.name}"></td>
+                                                <td th:text="${user.surname}"></td>
+                                                <td th:text="${user.dateOfBirth}"></td>
+                                                <td th:text="${user.email}"></td>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+<!--Jquery file-->
+<script src="main.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
